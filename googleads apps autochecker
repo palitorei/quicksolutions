@@ -1,21 +1,38 @@
 CODIGO QUE MARCA TODOS AS CAIXAS DE APLICATIVOS PARA SEREM EXCLUIDOS NO GOOGLE ADS :) 
 MARCAR 140 ITENS MANUALMENTE NÃO É NADA LEGAL...
-OBS (você precisa apenas abrir todas as caixas antes )
+---
 
+function expandAndCheckBoxes() {
+  var hasExpandedOrChecked = false;
 
+  var pickerTrees = document.querySelectorAll('picker-tree');
+  for (var i = 0; i < pickerTrees.length; i++) {
+    var expandIcon = pickerTrees[i].querySelector('.expand-icon');
+    if (expandIcon && pickerTrees[i].getAttribute('aria-expanded') === 'false') {
+      expandIcon.click();
+      hasExpandedOrChecked = true;
+    }
 
+    var checkbox = pickerTrees[i].querySelector('material-checkbox');
+    if (checkbox) {
+      var isChecked = checkbox.getAttribute('aria-checked') === 'true';
+      var isDisabled = pickerTrees[i].querySelector('.row').getAttribute('aria-disabled') === 'true';
+      var isSelected = pickerTrees[i].getAttribute('aria-selected') === 'true';
 
-
-var pickerTrees = document.querySelectorAll('picker-tree');
-for (var i = 0; i < pickerTrees.length; i++) {
-  var checkbox = pickerTrees[i].querySelector('material-checkbox');
-  if (checkbox) {
-    var isChecked = checkbox.getAttribute('aria-checked') === 'true';
-    var isDisabled = pickerTrees[i].querySelector('.row').getAttribute('aria-disabled') === 'true';
-    var isSelected = pickerTrees[i].getAttribute('aria-selected') === 'true';
-
-    if (!isChecked && !isDisabled && !isSelected) {
-      checkbox.click();
+      if (!isChecked && !isDisabled && !isSelected) {
+        checkbox.click();
+        hasExpandedOrChecked = true;
+      }
     }
   }
+
+  if (hasExpandedOrChecked) {
+    setTimeout(expandAndCheckBoxes, 500);
+  }
 }
+
+expandAndCheckBoxes();
+
+
+
+
